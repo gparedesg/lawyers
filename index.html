@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawyer/Law Firm Ratings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/6ffdb7a9d9.js" crossorigin="anonymous"></script>
+    <style>
+        .card {
+            margin: 1rem 0;
+        }
+        .rating-stars {
+            color: #f39c12;
+        }
+        .thumbnail {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Lawyer/Law Firm Ratings</h1>
+        <div id="lawyer-list" class="row"></div>
+    </div>
+
+    <script>
+        const lawyers = [
+      {
+        "content": {
+          "name": "Elliot J. Fishman PC",
+          "address": "108 West 39th Street Suite 501 New York, NY 10018",
+          "phone": "908-907-0281",
+          "score": 6,
+          "description_of_score": "Elliot J. Fishman PC is a law firm in New York that practices real estate law among others, which could be potentially relevant to your case regarding a building sale dispute. However, there is limited publicly available information about their specific expertise with buyer-related disputes or their success rate in similar cases. The lack of detailed customer reviews or testimonials makes it challenging to confidently assess their suitability for this specific legal matter.",
+          "image_url": "https://serpapi.com/searches/675d18ba2c15a198864c347e/images/d82ab705ee4c154d634062b7e498d0c8dc70eb947f9bad9fedff3d7de85739c6.jpg"
+        }
+      },
+      {
+        "content": {
+          "name": "Law Office of Faris S. Hamtini, P.C.",
+          "address": "30-30 Northern Blvd Suite 401, Long Island City, NY 11101",
+          "phone": "718-440-3396",
+          "score": 7,
+          "description": "The Law Office of Faris S. Hamtini, P.C. is a boutique law firm located in Queens, focusing on legal services in the area, which makes it relevant for local real estate disputes. However, limited public information on their specific expertise in handling breached real estate contracts suggests a moderate level of confidence.",
+          "image_url": "https://serpapi.com/searches/675d18beb17e50ab2525f159/images/abe95df7d59c761fee3dcc80f5c81fa8319f87cc1a86ccac64c0bf65c661b5e5.jpeg"
+        }
+      },
+      {
+        "content": {
+          "name": "Gordon Law",
+          "address": "300 E 33rd Street Suite 19N New York NY 10016",
+          "score": 0,
+          "score_description": "No relevant information found about the law firm's expertise or case history in handling similar cases.",
+          "phone": "212-588-9919"
+        }
+      },
+      {
+        "content": {
+          "score": 8,
+          "description": "Grover & Fensterstock PC appears to have expertise in real estate law, which is crucial for a lawsuit involving a building sale transaction. Their positive reviews and focus on real estate suggest they could competently handle such a case.",
+          "name": "Grover & Fensterstock PC",
+          "address": "733 Third Ave 16th Floor, New York, NY 10017",
+          "phone": "631-418-1100",
+          "image_url": null
+        }
+      },
+      {
+        "content": {
+          "name": "Howard N. Aranoff, Esq.",
+          "address": "57 West 57th Street 3rd and 4th Floor New York NY, 10019",
+          "phone": "516-773-3826",
+          "score": 4,
+          "description": "Howard Aranoff practices bankruptcy, debt, criminal defense, and general practice. While his expertise in general practice may cover various legal areas, there is no specific indication of experience in real estate law or litigation related to contract disputes on property sales, which are crucial for the lawsuit context described.",
+          "image_url": null
+        }
+      },
+      {
+        "content": {
+          "score": 8,
+          "name": "Zimmet Law Group P.C.",
+          "address": "477 Madison Avenue 2nd Floor New York, NY 10022",
+          "phone": "212-922-1330",
+          "description": "Zimmet Law Group P.C. is a full-service law firm with expertise in various legal areas, including real estate. They have skilled negotiators and experienced litigators, which is crucial for your needs in a lawsuit involving a real estate transaction. The clients are treated with respect and understanding, and the firm is known for honest and aggressive representation.",
+          "image_url": "https://serpapi.com/searches/675d18cc8d7b2ab86d56ec73/images/f824a088b58db0edaaff3b0573b551b22e5557c8518c91c81efb0c5d3cd5cebc.jpeg"
+        }
+      },
+      {
+        "content": {
+          "name": "The Mitchell Law Group",
+          "address": "295 Madison Avenue 12th Floor New York, NY 10017",
+          "phone": "646-893-6049",
+          "score": 5,
+          "description": "The Mitchell Law Group specializes in Labor & Employment, Personal Injury, and Entertainment Law, which may not be directly aligned with real estate litigation needs. However, if they have experienced attorneys on staff with real estate litigation experience, they could still be a fit, hence the median score.",
+          "image_url": "https://serpapi.com/searches/675d18cf72aec5b2a8f4cd4f/images/0576f02aefa7213a96463708ebabde2e37f4d1cd1e8514743c1b603e5137e3f2.jpg"
+        }
+      },
+      {
+        "content": {
+          "score": 7,
+          "description": "Michael C. Posner, Esq. appears to have substantial experience in litigation with a high rating of 4.9/5 from 77 reviews. His practice areas include real estate, which is pertinent to your case in Long Island City, Queens. However, more specific information regarding his experience with building sales or similar lawsuits was not found, which slightly lowers the confidence score.",
+          "name": "Michael C. Posner, Esq.",
+          "address": "477 Madison Avenue 6th Floor New York NY, 10022 New York County",
+          "phone": "212-494-0035",
+          "image_url": null
+        }
+      },
+      {
+        "content": {
+          "score": 7,
+          "description": "The Law Office of Kenneth D. Silverman appears to be a general practice law firm, which can handle a range of legal matters. However, there is no specific information available regarding their expertise in real estate law or handling cases involving failed real estate transactions. Without more detailed information about their experience in this area, they may be a decent choice but perhaps not the top specialist for this specific legal issue.",
+          "name": "Law Office of Kenneth D. Silverman",
+          "address": "450 Seventh Avenue Suite 704 New York NY, 10123",
+          "phone": "631-482-7059",
+          "image_url": null
+        }
+      },
+      {
+        "content": {
+          "score": 6,
+          "description": "Manuel Moses is an experienced attorney with over 20 years of experience and has helped thousands of clients in the NYC and Tri-State area. He specializes in medical malpractice, personal injury, and federal contract litigation, among other areas. While he does offer services for mediations in commercial contracts, which might be relevant to the case at hand, his core expertise seems to lie elsewhere.",
+          "name": "Manuel Moses",
+          "address": "236 West 26th Street Suite 303, New York, NY, 10001",
+          "phone": "212-736-2624",
+          "image_url": "https://serpapi.com/searches/675d18e3a8e924a1e70f022c/images/d5fba23192db6611aeef73e22fafce9d18975d12cebe2b31ac26f4e1c8a391a7.jpeg"
+        }
+      },
+      {
+        "content": {
+          "score": 7,
+          "description": "Hillary Johns has experience in real estate and civil matters, which makes her a plausible fit for a lawsuit regarding a failed property sale. However, the specific expertise in contract law and litigation related to real estate transactions is not explicitly mentioned, thus not rating the highest.",
+          "name": "Hillary Johns, Trial Lawyer",
+          "address": "200 Park Ave S #511, New York, NY 10003",
+          "phone": "310-492-4009",
+          "image_url": "https://serpapi.com/searches/675d18e7771aabfbcdd13f12/images/613468b16162090483986cd04595d76da0675518e2af0d5bdf69e746838621c5.jpeg"
+        }
+      },
+      {
+        "content": {
+          "score": 7,
+          "description": "The Steketee Firm LLC appears to be a somewhat suitable fit for a lawsuit regarding a real estate dispute. While their primary focus is on personal injury and business disputes, they also have expertise in real estate according to Randall Steketee's profile. They can potentially handle a case involving a broken real estate deal, but it may not be their strongest area. Given their location in New York and the provided expertise, they could be considered, but further inquiries about their specific experience in real estate litigations might be needed.",
+          "name": "The Steketee Firm LLC",
+          "address": "254 W 31st St, New York, NY 10001",
+          "phone": "917-882-8876",
+          "image_url": "https://serpapi.com/searches/675d18f1497b68f63c256d67/images/a7c1289e0bd3c27a8bc37946ce0882bc4ee6e66c226822d8a67f948be2d7aab9.jpeg"
+        }
+      },
+      {
+        "content": {
+          "score": 4,
+          "description": "Arthur A. Luger, Esq. appears to be focused on elder law and estate planning, which may not be closely related to real estate litigation or breach of contract issues. Therefore, it might not be the best fit for a lawsuit regarding the failed sale of a building.",
+          "name": "Arthur A. Luger, Esq.",
+          "address": "299 Broadway Suite 1700 New York NY, 10007 New York County",
+          "phone": "212-244-6255"
+        }
+      },
+      {
+        "content": {
+          "score": 6,
+          "description": "Khine Z. Aung & Associates does not appear to have specific information related to handling real estate lawsuits. The limited available data doesn't highlight expertise in lawsuit cases regarding real estate transactions, which may be crucial for the current legal needs. However, the presence of their listing indicates they are a functional legal entity, potentially with a general law practice.",
+          "name": "Khine Z. Aung & Associates",
+          "address": "7312 35th Avenue, Jackson Heights, NY 11372",
+          "phone": "929-333-6358",
+          "image_url": null
+        }
+      },
+      {
+        "content": {
+          "name": "Zimmet Law Group P.C.",
+          "address": "477 Madison Ave 2nd floor, New York, NY 10022",
+          "phone": "718-568-0680",
+          "score": 8,
+          "description": "Zimmet Law Group P.C. is a full-service law firm based in NYC, with expertise in real estate and litigation matters. Their experience and reputation suggest they could effectively assist in a lawsuit involving a building sale. The firm's focus on negotiation and litigation aligns well with the needs of your case.",
+          "image_url": "https://serpapi.com/searches/675d18ff058ae3acb1f26c6e/images/75f83a5bd3c4ca02c092b11330c4b75a67fd1ffb94f1c151add4994e3f2ca63d.jpeg"
+        }
+      },
+      {
+        "content": {
+          "score": 8,
+          "score_description": "Richard H. Gottesman is highly experienced, licensed for 39 years, with expertise in commercial, real estate, contracts, and agreements, which align well with your lawsuit needs regarding a failed building sale. His location in Brooklyn, while not in Queens or Long Island City, still places him in close proximity to the area in question.",
+          "name": "Richard H. Gottesman, Esq",
+          "address": "300 Cadman Plz W 12th floor, Brooklyn, NY 11201",
+          "phone": "718-858-2284",
+          "image_url": "https://serpapi.com/searches/675d190413be6fc87072712e/images/cb0443de09b4e68b96165f79c02c2c6ee5403cbb7b4e42069a90da993bc3440a.jpg"
+        }
+      },
+      {
+        "content": "{\"recipient_name\":\"functions.search\",\"parameters\":{\"input\":\"Aarons Law Office PLLC, Real estate attorney in New York\"}}\n{\"name\":\"Law Office of Aaron Ogletree\",\"address\":\"75 Maiden Lane Suite 222, New York, NY 10038\",\"phone\":\"586-447-2244\",\"score\":0,\"description\":\"The search did not yield specific reviews or information about the firm's expertise or previous case outcomes in the specific area of litigation related to buyers backing out of a real estate deal. Without sufficient data, I cannot accurately assess their fit for your specific legal needs.\",\"image_url\":\"https://serpapi.com/searches/675d1909e643e3ab3e91a0b9/images/df86e6e59f8d3006542bc55beac6663e3fa8eacfcaefdefff1739b9bc14b6afd.jpeg\"}"
+      },
+      {
+        "content": {
+          "name": "Kevin Kerveng Tung, P.C.",
+          "address": "136-20 38th Avenue, Suite 3D, Flushing, NY 11354, Queens County",
+          "phone": "718-939-4633",
+          "score": 6,
+          "description": "Kevin Kerveng Tung, P.C. has been serving clients since 1999 and their motto suggests a commitment to supporting businesses. While the firm seems to have a good history and presence, the information specifically related to handling cases where buyers back out of real estate deals is not clear. Thus, it might be a decent fit but verifying specific expertise in real estate contract litigation would be advisable.",
+          "image_url": null
+        }
+      },
+      {
+        "content": {
+          "score": 0,
+          "reasoning": "No specific information about Zimmet Law Group's expertise in handling lawsuits related to real estate or buyer-seller disputes was found during the search.",
+          "name": "Zimmet Law Group P.C.",
+          "address": "118-35 Queens Blvd. Forest Hills NY, 11375 Queens County",
+          "phone": "212-922-1330"
+        }
+      },
+      {
+        "content": {
+          "score": 3,
+          "reasoning": "The Abraham Law Group P.C., under the name Law Office of Isaac Abraham, appears to focus on traffic violation and speeding ticket cases rather than real estate law. Thus, it may not be well suited for a real estate lawsuit regarding property sales. With no specific information on handling real estate disputes involving backed-out buyers, their expertise might not align well with the needs of the case in question.",
+          "name": "Law Office of Isaac Abraham",
+          "address": "118-35 Queens Blvd #1205, Forest Hills, NY 11375",
+          "phone": "646-499-3131",
+          "image_url": "https://serpapi.com/searches/675d191d31e83ca83238becf/images/401916fcac4a42963fc54293f962c7f29a22ebc5d1dc922b8e4d19280226678c.jpeg"
+        }
+      },
+      {
+        "content": {
+          "score": 5,
+          "score_description": "Moderate option based on limited information. They may have expertise in real estate or contract law, but further research is required.",
+          "name": "Berman, Schulman & Levine",
+          "address": "4607 Fort Hamilton Parkway, Brooklyn, NY 11219",
+          "phone": "718-853-8220",
+          "image_url": "https://serpapi.com/searches/675d1921b56bdac82e85bc91/images/9e29459dbeb727cee7a216928bfb2c5fb2e04e6f777454b0bbb7e4db6388df77.jpg"
+        }
+      },
+      {
+        "content": {
+          "score": 8,
+          "description": "Zimmet Law Group P.C. has a solid reputation for handling legal matters with a focus on honest and aggressive representation when needed. They have expertise in real estate law in New York, making them well-suited for a case regarding a building sale dispute. Their experience in litigation and negotiation could be advantageous for resolving the client's situation efficiently. Established in New York, they are well-versed in local real estate laws, which is crucial for this type of case.",
+          "name": "Zimmet Law Group P.C.",
+          "address": "477 Madison Ave, 2nd floor, New York, NY 10022",
+          "phone": "718-942-3466",
+          "image_url": "https://serpapi.com/searches/675d1924e42b28b1849ebac9/images/e2d7f7282ff814a9029915a16bbd3953a173ee1bda4c92c1a32729d497bfb7f7.jpeg"
+        }
+      },
+      {
+        "content": {
+          "score": 7,
+          "description": "Michael C. Posner, Esq. has positive reviews for being responsive and professional in civil court disputes. He operates out of Bronx, NY, and there is no specific evidence of expertise in Long Island City real estate law, but his general civil and contract law experience makes him a good candidate. However, without explicit evidence of handling similar real estate sales disputes in the past, the suitability is slightly uncertain.",
+          "name": "Michael C. Posner, Esq.",
+          "address": "2622 East Tremont Avenue, Bronx, NY, 10461",
+          "phone": "718-519-7725"
+        }
+      },
+      {
+        "content": {
+          "name": "Anthony L. Verrelli & Associates, Attorneys at Law",
+          "address": "2565 Bronxwood Ave, Bronx, NY 10469",
+          "phone": "718-405-5657",
+          "score": 6,
+          "description": "Anthony L. Verrelli & Associates seem well-versed in various legal issues, including property-related matters. However, their primary focus is not exclusively on property litigation, which might affect the outcome in a specific case about a building sale gone wrong. They offer free consultations and have experience which is a plus.",
+          "image_url": "https://serpapi.com/searches/675d194578823fce9b246b32/images/a713752bbcd5007fed8ff201b0c5e995865758287e91833426bbfe01b9ab4a59.jpeg"
+        }
+      },
+      {
+        "content": {
+          "score": 8,
+          "reason": "The Law Firm of Masood Syed, P.C. appears to be active and experienced in handling a variety of legal needs. The firm is located in Valley Stream, New York, and based on its office location and image, it could be a suitable match for handling real estate-related matters in Queens, including Long Island City. Additionally, their expertise seems to cover individual and business legal needs, which suggests proficiency in handling disputes like the one mentioned. However, more specific information about their experience with similar lawsuits could further substantiate this score.",
+          "name": "Law Firm of Masood Syed, P.C.",
+          "address": "475 W Merrick Rd #105, Valley Stream, NY 11580",
+          "phone": "516-962-9574",
+          "image_url": "https://serpapi.com/searches/675d194d24f74b9baa8f4331/images/c4b151e13c74f16569f70511463690d69e09464aeb0efb6cc209468b89cb1e1f.jpeg"
+        }
+      },
+      {
+        "content": {
+          "score": 5,
+          "description": "Goldberg Sager & Associates is a general practice law firm in Brooklyn, NY, handling personal injury, real estate transactions, and more. Their experience in real estate might be useful, but they are not explicitly specialized in litigation related to contracts for sale of property. For a case involving a failed real estate transaction due to buyer default, a firm with a strong background in real estate litigation or contract law may be more suitable.",
+          "name": "Goldberg Sager & Associates",
+          "address": "1628 Kings Highway, Brooklyn, NY, 11229",
+          "phone": "718-645-6677",
+          "image_url": "https://serpapi.com/searches/675d195293e1f1c82f50c785/images/30d850f812b3b1392c36d6edccfff5b5d4e5448d348f6dd22597b6234c35e6d4.jpeg"
+        }
+      },
+      {
+        "content": {
+          "score": 3,
+          "description": "Usher Law Group P.C. appears to specialize in immigration law, and while they offer some business legal services, they may not have a strong specialization in real estate or contractual disputes like the one described. Therefore, they might not be the best fit for a lawsuit regarding a failed building sale.",
+          "name": "Usher Law Group P.C.",
+          "address": "1022 Avenue P, 2nd Floor, Brooklyn, NY 11223, Kings County",
+          "phone": "718-484-7510",
+          "image_url": "https://serpapi.com/searches/675d1956dfa84cb141587b0d/images/d24628f006bcb427dac35a4247ccbdbb9911b5e85b6f8df8899264aed66f252d.jpeg"
+        }
+      },
+      {
+        "content": {
+          "name": "Stephen A. Spinelli & Associates",
+          "address": "1861 86th St, Brooklyn, NY 11214",
+          "phone": "718-256-3333",
+          "score": 8,
+          "description": "Stephen A. Spinelli & Associates is a full-service law firm with experience in handling personal and business legal needs. As such, it could be a suitable choice for a case regarding a failed real estate transaction in Long Island City, Queens. The firm's experience, though not explicitly listed for real estate litigation, suggests versatility and attention to clients, which is favorable.",
+          "image_url": "https://serpapi.com/searches/675d195f7e6fc2badaf7e6f9/images/b30f95e380b7d8094bf4d8b15afd7342a22b747bd4ec26956d0abe0d1798bc0c.jpg"
+        }
+      },
+      {
+        "content": {
+          "name": "Cass Law Firm/ Jean-Paul Cass, Esq.",
+          "address": "359 Richmond Road, Douglaston NY, 11363 Queens County",
+          "phone": "857-222-1714",
+          "score": 3,
+          "description": "While the Cass Law Firm appears to have some legal skills and creative thinking, reviews about Jean-Paul Cass reveal a lack of experience with real estate matters such as tenant-landlord disputes. There is no indication of specialization in real estate law, making them likely a poor fit for a building sale lawsuit.",
+          "image_url": null
+        }
+      },
+      {
+        "content": {
+          "name": "Eaton & Torrenzano, L.L.P.",
+          "address": "1662 Sheepshead Bay Road, Brooklyn, NY, 11235 Kings County",
+          "phone": "718-332-7766",
+          "score": 4,
+          "description": "Eaton & Torrenzano, L.L.P. is primarily focused on personal injury cases, which may not be directly aligned with your need for real estate litigation assistance. However, if their expertise in litigation is broad, they might still offer guidance. You may need to verify their specific experience with real estate cases.",
+          "image_url": "https://serpapi.com/searches/675d1971cf3bc9a2ea3adc2f/images/105c00f1b29cfef8247a70c289c278fd8c8da932f2f02314315aa789cfba3292.jpeg"
+        }
+      },
+      {
+        "content": {
+          "name": "Stern, Stern & Fruchtman, PC",
+          "address": "1189 Forest Avenue, Staten Island, NY, 10310",
+          "phone": "718-448-6767",
+          "score": 6,
+          "description": "Stern, Stern & Fruchtman, PC is a full service law firm in Staten Island, NY, servicing NY, NJ, and Florida. While they may have experience in business law, it is unclear if they specialize in real estate litigation. Given their location in Staten Island and coverage of NY, they might be a convenient option, however, their solid reputation in the specific area of dealing with breached real estate contracts isn't clearly established, thus resulting in a moderate score.",
+          "image_url": "https://serpapi.com/searches/675d197635afbb4d6aaaa0e2/images/3ed04d8a202df181b4290ce3a678492f4492a0265b6071c1900abaf7d721c9f8.jpeg"
+        }
+      },
+      {
+        "content": {
+          "score": 4,
+          "description": "Howard N. Aranoff is associated with Gershman Law Firm at 3000 Marcus Avenue in Lake Success, NY 11042. This law firm appears to have a good reputation, with an average rating of 4.1 out of 5 based on 12 reviews. However, the available information does not specifically mention real estate or contract law, which are critical for a case involving breached property sale agreements. Therefore, while the firm seems competent in general legal services, there is limited evidence directly relating to expertise in the specific field needed, which may affect their suitability for your case.",
+          "name": "Howard N. Aranoff, Esq.",
+          "address": "3000 Marcus Avenue, Lake Success, NY 11042",
+          "phone": "516-773-3826",
+          "image_url": "https://serpapi.com/searches/675d197a5065eeadb7f94f58/images/fe84cbed3683bd31a3a87428c627bdd92ebd4a62911cd3cec6735d25d37e76750421a81c1cfae5b9.png"
+        }
+      },
+      {
+        "content": {
+          "score": 7,
+          "description": "Law Firm Masood Syed, P.C. appears to serve all five boroughs of New York City, which includes Long Island City, Queens. While specific details about their expertise in real estate or contractual disputes are not found, their geographic service area makes them a possible fit for the case. Their accessibility from Valley Stream also suggests convenience for clients in Queens.",
+          "name": "Law Firm Masood Syed, P.C.",
+          "address": "475 West Merrick Road  #105 Valley Stream NY, 11580 Nassau County",
+          "phone": "516-962-9574",
+          "image_url": "https://serpapi.com/searches/675d1981dafde18c9ff0174f/images/a817d7cb81ee3c1146ceb01b07cd4164bcb9808bfed6e3aba201588325b5a52a.jpeg"
+        }
+      },
+      {
+        "content": {
+          "score": 3,
+          "reason": "The Law Offices of Laurence Rogers primarily focuses on personal injury and estate planning. They might not have the specific expertise required for a real estate or contract litigation case involving a failed property sale. However, they are located in the New York area and might have some general legal knowledge that could be slightly beneficial. Based on the available information, their specialization does not align closely with your needs.",
+          "name": "Law Offices of Laurence Rogers",
+          "address": "70 Sunrise Hwy Suite 500, Valley Stream, NY 11581",
+          "phone": "516-253-4230",
+          "image_url": "https://serpapi.com/searches/675d1986d55fe9b5cb9608e8/images/8233ae276d617167e664d080131a635a54511f8805fe95e74407754bbb512275.png"
+        }
+      },
+      {
+        "content": {
+          "score": 0,
+          "description": "No relevant information was found for the 'Law Office of Kenneth D. Silverman, with address 149 New Dorp Lane Staten Island NY, 10306.' It might be a non-existing or lesser-known firm.",
+          "name": "Law Office of Kenneth D. Silverman",
+          "address": "149 New Dorp Lane, Staten Island, NY 10306",
+          "phone": "631-482-7059"
+        }
+      },
+      {
+        "content": {
+          "name": "Howard N. Aranoff, Esq.",
+          "score": 0,
+          "description": "No specific data was found directly related to Howard N. Aranoff, Esq. or indication of specialization that matches the requirement for real estate litigation.",
+          "address": "173 Huguenot Street  Suite 200, New Rochelle, NY 10801",
+          "phone": "516-773-3826"
+        }
+      },
+      {
+        "content": {
+          "name": "The Law Office of Jason Gang PLLC",
+          "address": "1245 Hewlett Plaza Suite 478 Hewlett NY, 11557 Nassau County",
+          "phone": "646-389-5610",
+          "score": 7,
+          "description": "This law firm appears to have expertise in real estate and business formation, which may be beneficial for a case involving a real estate sale dispute. However, there are no specific reviews or evidence indicating a specialization in handling cases involving buyers backing out of property sales.",
+          "imageURL": null
+        }
+      },
+      {
+        "content": {
+          "score": 0,
+          "description": "Unable to find relevant information for Matthew Rothstein, Esq. at the specified address that would allow for an evaluation for your lawsuit case.",
+          "name": "Matthew Rothstein, Esq.",
+          "address": "114 Old Country Road Suite 600 Mineola NY, 11501 Nassau County",
+          "phone": "718-464-7299"
+        }
+      },
+      {
+        "content": {
+          "name": "Law Offices of Anthony L. Verrelli",
+          "address": "774 White Plains Road, 220 Scarsdale, NY 10583, Westchester County",
+          "phone": "917-885-7823",
+          "score": 7,
+          "description": "The firm is known for handling diverse legal matters, and they have experience with contractual disputes, which is relevant to cases involving agreements not fulfilled by buyers. However, specific expertise in real estate law, particularly related to Long Island City, was not strongly highlighted in the search results.",
+          "image_url": null
+        }
+      },
+      {
+        "content": {
+          "name": "Richard D. Lorge, Esq.",
+          "address": "900 Merchants Concourse # 305, Westbury, NY 11590",
+          "phone": "516-228-0393",
+          "score": 0,
+          "score_description": "No relevant information was found to determine suitability for a lawsuit regarding a building sale.",
+          "image_url": "https://serpapi.com/searches/675d199e60c3a0a82ad2cf49/images/2886bfba15ac6b7ba04bad33c9f53200483d169c30f46d83c7e6a011e9771e69.jpg"
+        }
+      },
+      {
+        "content": {
+          "score": 7,
+          "description": "Peter Zuckerman, an experienced attorney with over two decades of practice, could be a solid choice for a lawsuit regarding a property transaction. His experience in real estate law likely provides him with the expertise needed to handle your case, especially since he represents both individuals and businesses. However, further details of his specific experience with similar cases would provide a better indication of fit.",
+          "name": "Peter Zuckerman, Attorney, P.C.",
+          "address": "626 Rex Corp Plaza Sixth Floor, Uniondale, NY, 11556 Nassau County",
+          "phone": "516-404-6643"
+        }
+      }
+    ];
+
+        const lawyerList = document.getElementById('lawyer-list');
+
+        lawyers.forEach(lawyer => {
+            const { name, address, phone, score, description, score_description, resoning, image_url } = lawyer.content;
+
+            const resolvedDescription = description || score_description || resoning || "No description available.";
+
+            const stars = Array.from({ length: 10 }, (_, i) => {
+                return `<i class="fa fa-star${i < score ? '' : '-o'}"></i>`;
+            }).join('');
+
+            const lawyerCard = document.createElement('div');
+            lawyerCard.className = 'col-md-6';
+            lawyerCard.innerHTML = `
+                <div class="card">
+                    <div class="card-body d-flex">
+                        <div class="me-3">
+                            ${image_url ? `<img src="${image_url}" alt="${name}" class="thumbnail">` : ''}
+                        </div>
+                        <div>
+                            <h5 class="card-title">${name}</h5>
+                            <p class="card-text">${resolvedDescription}</p>
+                            <p><strong>Address:</strong> ${address}</p>
+                            <p><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>
+                            <p class="rating-stars">${stars}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lawyerList.appendChild(lawyerCard);
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
